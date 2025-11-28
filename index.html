@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imposter - Game Lobby</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Home Page -->
+    <div id="home-page" class="page active">
+        <div class="container">
+            <h1 class="title">IMPOSTER</h1>
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="showCreateLobby()">Create Lobby</button>
+                <button class="btn btn-secondary" onclick="showJoinLobby()">Join Lobby</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Lobby - Customization Page -->
+    <div id="create-customize-page" class="page">
+        <div class="container">
+            <h2 class="page-title">Create Lobby</h2>
+            <div class="button-group">
+                <button class="btn btn-secondary" onclick="goHome()">Back</button>
+                <button class="btn btn-primary" onclick="finalizeLobby()">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Lobby - Name Input Page -->
+    <div id="create-name-page" class="page">
+        <div class="container">
+            <h2 class="page-title">Set Your Name</h2>
+            <div class="form-group">
+                <input type="text" id="host-name-input" placeholder="Enter your name" class="input" maxlength="20">
+            </div>
+            <div class="button-group">
+                <button class="btn btn-secondary" onclick="goBackToCustomize()">Back</button>
+                <button class="btn btn-primary" onclick="saveHostName()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Join Lobby - Code Input Page -->
+    <div id="join-code-page" class="page">
+        <div class="container">
+            <h2 class="page-title">Enter Lobby Code</h2>
+            <div class="form-group">
+                <input type="text" id="lobby-code-input" placeholder="Enter 8-digit code" class="input code-input" maxlength="8" style="text-transform: uppercase;">
+            </div>
+            <div class="button-group">
+                <button class="btn btn-secondary" onclick="goHome()">Back</button>
+                <button class="btn btn-primary" onclick="joinLobby()">Join</button>
+            </div>
+            <div id="join-error" class="error-message"></div>
+        </div>
+    </div>
+
+    <!-- Join Lobby - Name Input Page -->
+    <div id="join-name-page" class="page">
+        <div class="container">
+            <h2 class="page-title">Set Your Name</h2>
+            <div class="form-group">
+                <input type="text" id="player-name-input" placeholder="Enter your name" class="input" maxlength="20">
+            </div>
+            <div class="button-group">
+                <button class="btn btn-secondary" onclick="goBackToJoinCode()">Back</button>
+                <button class="btn btn-primary" onclick="savePlayerName()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lobby Waiting Room -->
+    <div id="lobby-waiting-page" class="page">
+        <div class="container">
+            <h2 class="page-title">Lobby</h2>
+            <div class="lobby-code-display">
+                <span class="code-label">Lobby Code:</span>
+                <div class="code-container">
+                    <span id="lobby-code-display" class="code-value"></span>
+                    <button class="copy-button" onclick="copyLobbyCode()" title="Copy to clipboard">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="players-list-container">
+                <h3 class="players-title">Players</h3>
+                <ul id="players-list" class="players-list"></ul>
+            </div>
+            <div class="button-group" id="start-button-container">
+                <button class="btn btn-primary" id="start-button" onclick="startGame()">Start Game</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Countdown Screen -->
+    <div id="game-countdown-page" class="page">
+        <div class="container game-container">
+            <div id="countdown-display" class="countdown-display">5</div>
+            <div class="round-info">
+                <span id="round-number-display">Round 1</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Role Assignment Screen -->
+    <div id="role-assignment-page" class="page">
+        <div class="container game-container">
+            <div id="role-status" class="role-status"></div>
+            <div id="word-hint-display" class="word-hint-display"></div>
+            <div id="first-player-display" class="first-player-display"></div>
+        </div>
+    </div>
+
+    <!-- Game Playing Screen -->
+    <div id="game-playing-page" class="page">
+        <div class="container game-container">
+            <div class="round-info-top">
+                <span id="playing-round-number">Round 1</span>
+            </div>
+            <div id="playing-word-hint" class="playing-word-hint-container"></div>
+            <div class="game-instructions">
+                <p>Discuss with other players outside this app.</p>
+                <p>Take turns giving hints about the word.</p>
+                <p>Try to find the imposter!</p>
+            </div>
+            <div class="button-group" id="finished-button-container">
+                <button class="btn btn-primary" id="finished-button" onclick="finishRound()">Finished</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Screen -->
+    <div id="results-page" class="page">
+        <div class="container game-container">
+            <h2 class="page-title">Round Results</h2>
+            <div id="imposter-reveal" class="imposter-reveal"></div>
+            <div id="word-reveal" class="word-reveal"></div>
+            <div id="next-round-info" class="next-round-info"></div>
+            <div class="button-group" id="continue-button-container">
+                <button class="btn btn-primary" id="continue-button" onclick="continueToNextRound()" style="display: none;">Back</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="words.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
+
